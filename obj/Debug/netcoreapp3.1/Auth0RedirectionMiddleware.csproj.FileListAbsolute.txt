@@ -1,0 +1,9 @@
+/Users/borisgeorgiev/Projects/Sociality/SocialityMicroserviceAuthorization/bin/Debug/netcoreapp3.1/Auth0RedirectionMiddleware.deps.json
+/Users/borisgeorgiev/Projects/Sociality/SocialityMicroserviceAuthorization/bin/Debug/netcoreapp3.1/Auth0RedirectionMiddleware.dll
+/Users/borisgeorgiev/Projects/Sociality/SocialityMicroserviceAuthorization/bin/Debug/netcoreapp3.1/Auth0RedirectionMiddleware.pdb
+/Users/borisgeorgiev/Projects/Sociality/SocialityMicroserviceAuthorization/obj/Debug/netcoreapp3.1/Auth0RedirectionMiddleware.csprojAssemblyReference.cache
+/Users/borisgeorgiev/Projects/Sociality/SocialityMicroserviceAuthorization/obj/Debug/netcoreapp3.1/Auth0RedirectionMiddleware.AssemblyInfoInputs.cache
+/Users/borisgeorgiev/Projects/Sociality/SocialityMicroserviceAuthorization/obj/Debug/netcoreapp3.1/Auth0RedirectionMiddleware.AssemblyInfo.cs
+/Users/borisgeorgiev/Projects/Sociality/SocialityMicroserviceAuthorization/obj/Debug/netcoreapp3.1/Auth0RedirectionMiddleware.csproj.CoreCompileInputs.cache
+/Users/borisgeorgiev/Projects/Sociality/SocialityMicroserviceAuthorization/obj/Debug/netcoreapp3.1/Auth0RedirectionMiddleware.dll
+/Users/borisgeorgiev/Projects/Sociality/SocialityMicroserviceAuthorization/obj/Debug/netcoreapp3.1/Auth0RedirectionMiddleware.pdb

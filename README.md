@@ -15,7 +15,7 @@ The authorization checks should be implemented by the consumer of the library. T
 The middleware is executed only for the Controller methods that are decorated with the EngageAuth0RedirectionMiddleware attribute.
 
 Your configure method should look like this:
-
+```csharp
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -58,9 +58,11 @@ Your configure method should look like this:
                 return false;
             }
         }
+```
 
 Your controller methods should be decorated like this:
 
+```csharp
     [Route("auth")]
     public class LoginController : Controller
     {
@@ -77,3 +79,4 @@ Your controller methods should be decorated like this:
             return Ok("You are authorized!");
         }
     }
+```

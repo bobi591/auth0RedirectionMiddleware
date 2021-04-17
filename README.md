@@ -3,7 +3,7 @@ ASP.NET Core middleware that toggles the Auth0 challenge when the visitor is not
 
 This middleware is created as workaraound of the bad Authorize Attribute redirection to the login page when Auth0 authentication is used.
 The current Auth0 issue where the login uri cannot be set in some cases makes the Authorize Attribute to redirect to an invalid login page.
-Using this middleware the unauthenticated visitors are getting redirected to the Auth0 challenge directly without the need of additional code.
+Using this middleware the unauthenticated visitors are getting redirected to the Auth0 challenge.
 
 The authorization checks should be implemented by the consumer of the library. The checks are passed to the middleware through boolean delegate.
 

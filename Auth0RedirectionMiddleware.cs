@@ -6,14 +6,27 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace Auth0RedirectionMiddleware
 {
+    /// <summary>
+    /// This delegate should be pointing to a method that implements the logic
+    /// that determines if the current user is authenticated.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns>Boolean (when false the user will be challenged)</returns>
+    public delegate bool AuthDelegate(HttpContext context);
+
+    /// <summary>
+    /// Auth0 challenge redirection middleware.
+    /// </summary>
     public class Auth0RedirectionMiddleware
-    {
+    {   
         private readonly RequestDelegate _next;
         private readonly Auth0RedirectionMiddlewareOptions _options;
-
-        public Auth0RedirectionMiddleware(RequestDelegate next, Auth0RedirectionMiddlewareOptions options)
+        private readonly AuthDelegate _authDelegate;
+            
+        public Auth0RedirectionMiddleware(RequestDelegate next, Auth0RedirectionMiddlewareOptions options, AuthDelegate authDelegate)
         {
             _next = next;
+            _authDelegate = authDelegate;
 
             if (options == null)
             {
@@ -27,12 +40,21 @@ namespace Auth0RedirectionMiddleware
         {
             try
             {
-                if (!context.User.Identity.IsAuthenticated)
+                if(_authDelegate!=null)
                 {
-                    //Redirect to the Auth0 challenge.
-                    await context.ChallengeAsync(_options.Scheme,
-                        new AuthenticationProperties() { RedirectUri = _options.RedirectUri });
-                    return;
+                    bool isEligible = _authDelegate.Invoke(context);
+
+                    if(!isEligible)
+                    {
+                        //Redirect to the Auth0 challenge.
+                        await context.ChallengeAsync(_options.Scheme,
+                            new AuthenticationProperties() { RedirectUri = _options.RedirectUri });
+                        return;
+                    }
+                }
+                else
+                {
+                    throw new Auth0RedirectionMiddlewareException("Authentication checks failure. The AuthDelegate is null.");
                 }
 
                 // Let all the previous actions in the pipeline to finish.

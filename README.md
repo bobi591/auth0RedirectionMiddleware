@@ -29,7 +29,11 @@ Your configure method should look like this:
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseAuth0RedirectionMiddlewareExtensions();
+            app.UseAuth0RedirectionMiddlewareExtensions(new Auth0RedirectionMiddlewareOptions
+            {
+                Scheme = "Auth0",
+                RedirectUri = "/"
+            });
 
             app.UseEndpoints(endpoints =>
             {

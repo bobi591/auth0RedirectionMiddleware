@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-
+using Microsoft.AspNetCore.Http.Features;
 
 namespace Auth0RedirectionMiddleware
 {
@@ -40,24 +40,30 @@ namespace Auth0RedirectionMiddleware
         {
             try
             {
-                if(_authDelegate!=null)
-                {
-                    bool isEligible = _authDelegate.Invoke(context);
+                Endpoint endpoint = context.Features.Get<IEndpointFeature>()?.Endpoint;
+                EngageAuth0RedirectionMiddleware engageAuth0 = endpoint?.Metadata.GetMetadata<EngageAuth0RedirectionMiddleware>();
 
-                    if(!isEligible)
+                if (engageAuth0 != null)
+                {
+                    if (_authDelegate != null)
                     {
-                        //Redirect to the Auth0 challenge.
-                        await context.ChallengeAsync(_options.Scheme,
-                            new AuthenticationProperties() { RedirectUri = _options.RedirectUri });
-                        return;
+                        bool isEligible = _authDelegate.Invoke(context);
+
+                        if (!isEligible)
+                        {
+                            //Redirect to the Auth0 challenge.
+                            await context.ChallengeAsync(_options.Scheme,
+                                new AuthenticationProperties() { RedirectUri = _options.RedirectUri });
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        throw new Auth0RedirectionMiddlewareException("Authentication checks failure. The AuthDelegate is null.");
                     }
                 }
-                else
-                {
-                    throw new Auth0RedirectionMiddlewareException("Authentication checks failure. The AuthDelegate is null.");
-                }
 
-                // Let all the previous actions in the pipeline to finish.
+                // Continue the pipeline.
                 await _next(context);
             }
             catch(Exception e)

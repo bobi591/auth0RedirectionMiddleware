@@ -10,6 +10,9 @@ You can additionally customize this for your specific needs!!
 How to setup:
 In the Configure method of your Startup.cs class add "app.UseAuth0RedirectionMiddlewareExtensions();".
 NOTE THAT THIS SHOULD GO AFTER "app.UseAuthentication(); & app.UseAuthorization();" in the HTTP request pipeline.
+
+The authorization checks should be implemented by the consumer of the library. The checks are passed to the middleware through boolean delegate.
+
 Your configure method should look like this:
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -29,13 +32,28 @@ Your configure method should look like this:
             app.UseAuthentication();
             app.UseAuthorization();
 
+            AuthDelegate authDelegate = new AuthDelegate(this.CustomAuth);
+
             app.UseAuth0RedirectionMiddlewareExtensions(new Auth0RedirectionMiddlewareOptions
             {
                 Scheme = "Auth0",
                 RedirectUri = "/"
-            });
+            }, authDelegate);
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public bool CustomAuth(HttpContext context)
+        {
+            if(context.User.Identity.IsAuthenticated)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }

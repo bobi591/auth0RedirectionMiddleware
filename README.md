@@ -28,19 +28,16 @@ Your configure method should look like this:
 
             app.UseRouting();
 
-
-            // Register the Authentication middleware
-
             app.UseAuthentication();
             app.UseAuthorization();
 
-            AuthDelegate authDelegate = new AuthDelegate(this.CustomAuth);
+            AuthDelegate authDelegate = new AuthDelegate(this.CustomAuth); //Here the delegate is assigned to the custom auth method.
 
             app.UseAuth0RedirectionMiddlewareExtensions(new Auth0RedirectionMiddlewareOptions
             {
                 Scheme = "Auth0",
                 RedirectUri = "/"
-            }, authDelegate);
+            }, authDelegate); //Adding the middleware to the pipeline.
 
             app.UseEndpoints(endpoints =>
             {
@@ -48,7 +45,7 @@ Your configure method should look like this:
             });
         }
 
-        public bool CustomAuth(HttpContext context)
+        public bool CustomAuth(HttpContext context) //This is the custom auth method implementation.
         {
             if(context.User.Identity.IsAuthenticated)
             {
@@ -74,7 +71,7 @@ Your controller methods should be decorated like this:
         }
 
         [Route("isAuthorized")]
-        [EngageAuth0RedirectionMiddleware]
+        [EngageAuth0RedirectionMiddleware] //Here the method is decorated with the attributes that toggles the Auth0RedirectionMiddleware
         public async Task<IActionResult> IsAuthorized()
         {
             return Ok("You are authorized!");

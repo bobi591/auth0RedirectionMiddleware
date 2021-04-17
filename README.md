@@ -12,6 +12,7 @@ In the Configure method of your Startup.cs class add "app.UseAuth0RedirectionMid
 NOTE THAT THIS SHOULD GO AFTER "app.UseAuthentication(); & app.UseAuthorization();" in the HTTP request pipeline.
 
 The authorization checks should be implemented by the consumer of the library. The checks are passed to the middleware through boolean delegate.
+The middleware is executed only for the Controller methods that are decorated with the EngageAuth0RedirectionMiddleware attribute.
 
 Your configure method should look like this:
 
@@ -57,3 +58,22 @@ Your configure method should look like this:
                 return false;
             }
         }
+
+Your controller methods should be decorated like this:
+
+    [Route("auth")]
+    public class LoginController : Controller
+    {
+        [Route("test")]
+        public async Task<IActionResult> Test()
+        {
+            return Ok("Service is up!");
+        }
+
+        [Route("isAuthorized")]
+        [EngageAuth0RedirectionMiddleware]
+        public async Task<IActionResult> IsAuthorized()
+        {
+            return Ok("You are authorized!");
+        }
+    }

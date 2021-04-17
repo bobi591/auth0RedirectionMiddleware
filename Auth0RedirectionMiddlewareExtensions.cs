@@ -8,9 +8,10 @@ namespace Auth0RedirectionMiddleware
     /// </summary>
     public static class Auth0RedirectionMiddlewareExtensions
     {
-        public static IApplicationBuilder UseAuth0RedirectionMiddlewareExtensions(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseAuth0RedirectionMiddlewareExtensions
+            (this IApplicationBuilder builder, Auth0RedirectionMiddlewareOptions options)
         {
-            return builder.UseMiddleware<Auth0RedirectionMiddleware>();
+            return builder.UseMiddleware<Auth0RedirectionMiddleware>(options);
         }
     }
 }
